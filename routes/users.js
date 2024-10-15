@@ -45,7 +45,7 @@ p
 });
 
 // Route to list users (excluding passwords)
-router.get('/list', function (req, res, next) {
+router.get('/list', redirectLogin, function (req, res, next) {
     const sql = 'SELECT username, firstName, lastName, email FROM users';
 
     db.query(sql, function (err, result) {
@@ -90,7 +90,7 @@ router.get('/login', function (req, res, next) {
           } else if (result === true) {
             req.session.userId = req.body.username;
             // Passwords match, login successful
-            res.send('Login successful');
+            res.send('Login successful' + '<a href='+'/'+'>Home</a>');
           } else {
             // Passwords do not match
             res.send('Incorrect password');
