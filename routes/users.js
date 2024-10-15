@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const redirectLogin = (req, res, next) => {
+  if (!req.session.userId ) {
+    res.redirect('./login') // redirect to the login page
+  } else { 
+      next (); // move to the next middleware function
+  } 
+}
 
 
 // Route to render registration form
@@ -81,6 +88,7 @@ router.get('/login', function (req, res, next) {
             // Handle error
             res.status(500).send('Error during password comparison');
           } else if (result === true) {
+            req.session.userId = req.body.username;
             // Passwords match, login successful
             res.send('Login successful');
           } else {
